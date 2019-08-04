@@ -96,6 +96,10 @@ public class ListActivity extends AppCompatActivity implements RecyclerViewAdapt
     @Override
     protected void onStart() {
         super.onStart();
+        if (user != null) {
+            String userId = user.getUid();
+            checkAdmin(userId);
+        }
         // mFirebaseAuth.addAuthStateListener(mAuthListener);
 
     }
@@ -134,9 +138,6 @@ public class ListActivity extends AppCompatActivity implements RecyclerViewAdapt
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     mFirebaseAuth.addAuthStateListener(mAuthListener);
-                    if (document != null) {
-                        document.getData().clear();
-                    }
                 }
             });
             mFirebaseAuth.removeAuthStateListener(mAuthListener);
@@ -149,6 +150,10 @@ public class ListActivity extends AppCompatActivity implements RecyclerViewAdapt
     @Override
     protected void onResume() {
         super.onResume();
+        if (user != null) {
+            String userId = user.getUid();
+            checkAdmin(userId);
+        }
         setupAdapter();
     }
 
