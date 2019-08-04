@@ -134,6 +134,9 @@ public class ListActivity extends AppCompatActivity implements RecyclerViewAdapt
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     mFirebaseAuth.addAuthStateListener(mAuthListener);
+                    if (document != null) {
+                        document.getData().clear();
+                    }
                 }
             });
             mFirebaseAuth.removeAuthStateListener(mAuthListener);

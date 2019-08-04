@@ -186,12 +186,13 @@ public class DealActivity extends AppCompatActivity implements ChooseImageFragme
                                 Task<Uri> urlTask = taskSnapshot.getStorage().getDownloadUrl();
                                 while
                                 (!urlTask.isSuccessful()) ;
+
                                 Uri downloadUrl = urlTask.getResult();
                                 profileImageUrl = downloadUrl.toString().trim();
                                 travelDealBinding.progressBar.setVisibility(View.GONE);
 
-
                             }
+
                         })
                         .addOnFailureListener(new OnFailureListener() {
                             @Override
