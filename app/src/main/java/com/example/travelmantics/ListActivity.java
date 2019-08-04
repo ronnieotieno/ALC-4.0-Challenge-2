@@ -10,9 +10,10 @@ import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.travelmantics.databinding.ActivityMainBinding;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -31,7 +32,6 @@ import java.util.List;
 
 public class ListActivity extends AppCompatActivity implements RecyclerViewAdapter.OnItemClickListener {
     private RecyclerViewAdapter recyclerViewAdapter;
-    private RecyclerView recyclerView;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private Context context;
     private TravelDeal clickedItem;
@@ -44,11 +44,12 @@ public class ListActivity extends AppCompatActivity implements RecyclerViewAdapt
     public FirebaseAuth mFirebaseAuth;
     public FirebaseAuth.AuthStateListener mAuthListener;
     private final int RC_SIGN_IN = 123;
+    private ActivityMainBinding mainBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        mainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
         mFirebaseAuth = FirebaseAuth.getInstance();
 
@@ -64,7 +65,6 @@ public class ListActivity extends AppCompatActivity implements RecyclerViewAdapt
 
         };
 
-        recyclerView = findViewById(R.id.recyclerView);
         setupAdapter();
 
         if (user != null) {
@@ -100,7 +100,6 @@ public class ListActivity extends AppCompatActivity implements RecyclerViewAdapt
             String userId = user.getUid();
             checkAdmin(userId);
         }
-        // mFirebaseAuth.addAuthStateListener(mAuthListener);
 
     }
 
@@ -158,7 +157,6 @@ public class ListActivity extends AppCompatActivity implements RecyclerViewAdapt
     }
 
     private void setupAdapter() {
-        // FirebaseUtil.openFbReference(this);
 
         dbRef = db.collection("Deals");
         Query query = dbRef.orderBy("price", Query.Direction.DESCENDING);
@@ -169,9 +167,9 @@ public class ListActivity extends AppCompatActivity implements RecyclerViewAdapt
         recyclerViewAdapter = new RecyclerViewAdapter(options, ListActivity.this);
         recyclerViewAdapter.startListening();
         recyclerViewAdapter.notifyDataSetChanged();
-        recyclerView.setHasFixedSize(false);
-        recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        recyclerView.setAdapter(recyclerViewAdapter);
+        mainBinding.recyclerView.setHasFixedSize(false);
+        mainBinding.recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        mainBinding.recyclerView.setAdapter(recyclerViewAdapter);
         recyclerViewAdapter.setOnItemClickListener(ListActivity.this);
         mFirebaseAuth.addAuthStateListener(mAuthListener);
         if (user != null) {
@@ -201,8 +199,6 @@ public class ListActivity extends AppCompatActivity implements RecyclerViewAdapt
                 intent.putExtra("id", clickedItem.getId());
 
                 startActivity(intent);
-            } else {
-                recyclerView.setClickable(false);
             }
         }
     }
