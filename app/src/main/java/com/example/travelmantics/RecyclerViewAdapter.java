@@ -31,26 +31,26 @@ public class RecyclerViewAdapter extends FirestoreRecyclerAdapter<TravelDeal, Re
     @Override
     protected void onBindViewHolder(@NonNull ViewHolder viewHolder, int i, @NonNull TravelDeal item) {
         TravelDeal travelDeal = new TravelDeal(item.getTitle(), item.getDescription(), item.getPrice(), item.getImageUrl());
-        viewHolder.recyclerviewBinding.setTravel(travelDeal);
+        viewHolder.recyclerViewBinding.setTravel(travelDeal);
 
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        RecyclerviewTravelBinding recyclerviewBindings = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.recyclerview_travel, parent, false);
-        return new ViewHolder(recyclerviewBindings);
+        RecyclerviewTravelBinding recyclerViewBindings = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.recyclerview_travel, parent, false);
+        return new ViewHolder(recyclerViewBindings);
     }
 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        RecyclerviewTravelBinding recyclerviewBinding;
+        RecyclerviewTravelBinding recyclerViewBinding;
 
         public ViewHolder(@NonNull RecyclerviewTravelBinding itemView) {
             super(itemView.getRoot());
 
-            recyclerviewBinding = itemView;
+            recyclerViewBinding = itemView;
 
             itemView.getRoot().setOnClickListener(new View.OnClickListener() {
                 @Override
