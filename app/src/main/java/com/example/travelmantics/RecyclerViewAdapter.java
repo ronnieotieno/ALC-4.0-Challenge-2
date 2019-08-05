@@ -30,7 +30,7 @@ public class RecyclerViewAdapter extends FirestoreRecyclerAdapter<TravelDeal, Re
 
     @Override
     protected void onBindViewHolder(@NonNull ViewHolder viewHolder, int i, @NonNull TravelDeal item) {
-        TravelDeal travelDeal = new TravelDeal(item.getTitle(), item.getDescription(), item.getPrice(), item.getImageUrl());
+        TravelDeal travelDeal = new TravelDeal(item.getTitle(), item.getDescription(), "$ " + item.getPrice(), item.getImageUrl());
         viewHolder.recyclerViewBinding.setTravel(travelDeal);
 
     }

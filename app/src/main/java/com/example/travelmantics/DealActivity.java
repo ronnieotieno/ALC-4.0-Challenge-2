@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.travelmantics.databinding.ActivityTravelDealBinding;
+import com.google.android.gms.tasks.OnCanceledListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -144,7 +145,7 @@ public class DealActivity extends AppCompatActivity implements ChooseImageFragme
         dbRef.add(deal).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
             @Override
             public void onSuccess(DocumentReference documentReference) {
-                Toast.makeText(DealActivity.this, "Saved", LENGTH_SHORT).show();
+                Toast.makeText(DealActivity.this, "Deal Saved Successfully", LENGTH_SHORT).show();
                 travelDealBinding.progressBar.setVisibility(View.GONE);
                 clearViews();
                 Intent intent = new Intent(DealActivity.this, ListActivity.class);
@@ -175,6 +176,7 @@ public class DealActivity extends AppCompatActivity implements ChooseImageFragme
             StorageReference profileImageRef =
                     FirebaseStorage.getInstance().getReference("dealpics/" + currentTimeMillis() + ".jpg");
             if (mUploadBytes != null) {
+                travelDealBinding.btnImage.setVisibility(View.GONE);
                 travelDealBinding.progressBar.setVisibility(View.VISIBLE);
                 profileImageRef.putBytes(mUploadBytes)
                         .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -200,6 +202,7 @@ public class DealActivity extends AppCompatActivity implements ChooseImageFragme
                                 Toast.makeText(DealActivity.this, e.getMessage(), LENGTH_SHORT).show();
                                 Log.d("DealActivity", "onFailure: " + e.getMessage());
                                 travelDealBinding.progressBar.setVisibility(View.GONE);
+                                travelDealBinding.btnImage.setVisibility(View.VISIBLE);
                             }
                         }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
                     @Override
@@ -207,6 +210,11 @@ public class DealActivity extends AppCompatActivity implements ChooseImageFragme
                         travelDealBinding.progressBar.getProgress();
                         travelDealBinding.btnImage.setEnabled(false);
 
+                    }
+                }).addOnCanceledListener(new OnCanceledListener() {
+                    @Override
+                    public void onCanceled() {
+                        travelDealBinding.btnImage.setVisibility(View.VISIBLE);
                     }
                 });
             }
